@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @AllArgsConstructor
@@ -59,5 +60,13 @@ public class ProjectWorkServiceImpl implements ProjectWorkService {
 
         // Delete the project work
         projectWorkRepository.delete(projectWork);
+    }
+
+    @Override
+    public List<ProjectWork> getProjectWorksByProjectId(long projectId) {
+        Project project = projectRepository.findById(projectId)
+                .orElseThrow(() -> new EntityNotFoundException("Project not found with id: " + projectId));
+
+        return project.getProjectWorks();
     }
 }

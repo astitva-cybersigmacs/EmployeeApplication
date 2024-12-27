@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @AllArgsConstructor
 @RequestMapping("/api/projects/{projectId}/works")
@@ -30,5 +32,11 @@ public class ProjectWorkController {
             @PathVariable long workId) {
         projectWorkService.deleteProjectWork(projectId, workId);
         return ResponseEntity.noContent().build();
+    }
+    @GetMapping
+    public ResponseEntity<List<ProjectWork>> getProjectWorksByProjectId(
+            @PathVariable long projectId) {
+        List<ProjectWork> projectWorks = projectWorkService.getProjectWorksByProjectId(projectId);
+        return ResponseEntity.ok(projectWorks);
     }
 }
