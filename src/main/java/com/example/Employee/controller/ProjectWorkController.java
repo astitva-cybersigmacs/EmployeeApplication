@@ -23,4 +23,12 @@ public class ProjectWorkController {
         ProjectWork savedWork = projectWorkService.saveProjectWork(projectId, projectWork);
         return new ResponseEntity<>(savedWork, HttpStatus.CREATED);
     }
+
+    @DeleteMapping("/{workId}")
+    public ResponseEntity<?> deleteProjectWork(
+            @PathVariable long projectId,
+            @PathVariable long workId) {
+        projectWorkService.deleteProjectWork(projectId, workId);
+        return ResponseEntity.noContent().build();
+    }
 }

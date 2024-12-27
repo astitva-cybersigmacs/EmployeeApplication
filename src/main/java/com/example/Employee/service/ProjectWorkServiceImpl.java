@@ -39,4 +39,25 @@ public class ProjectWorkServiceImpl implements ProjectWorkService {
 
         return projectWorkRepository.save(projectWork);
     }
+
+    @Override
+    @Transactional
+    public void deleteProjectWork(long projectId, long workId) {
+        Project project = projectRepository.findById(projectId)
+                .orElseThrow(() -> new EntityNotFoundException("Project not found with id: " + projectId));
+
+        ProjectWork projectWork = projectWorkRepository.findById(workId)
+                .orElseThrow(() -> new EntityNotFoundException("Project work not found with id: " + workId));
+
+        // Verify that the project work belongs to the specified project
+        if (projectWork.getProject().getProjectId() != projectId) {
+            throw new IllegalArgumentException("Project work does not belong to the specified project");
+        }
+
+        // Remove the work from the project's list
+        project.getProjectWorks().remove(projectWork);
+
+        // Delete the project work
+        projectWorkRepository.delete(projectWork);
+    }
 }
