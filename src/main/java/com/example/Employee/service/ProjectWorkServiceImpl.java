@@ -10,8 +10,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Service
 @AllArgsConstructor
@@ -68,5 +67,55 @@ public class ProjectWorkServiceImpl implements ProjectWorkService {
                 .orElseThrow(() -> new EntityNotFoundException("Project not found with id: " + projectId));
 
         return project.getProjectWorks();
+    }
+
+    @Override
+    @Transactional
+    public ProjectWork updateProjectWorkDates(long projectId, long workId, Map<String, Date> dates) {
+        Project project = projectRepository.findById(projectId)
+                .orElseThrow(() -> new EntityNotFoundException("Project not found with id: " + projectId));
+
+        ProjectWork projectWork = projectWorkRepository.findById(workId)
+                .orElseThrow(() -> new EntityNotFoundException("Project work not found with id: " + workId));
+
+        if (projectWork.getProject().getProjectId() != projectId) {
+            throw new IllegalArgumentException("Project work does not belong to the specified project");
+        }
+
+        // Set time to noon UTC to avoid timezone issues
+        if (dates.containsKey("currentWorkCompletionDate")) {
+            Date completionDate = dates.get("currentWorkCompletionDate");
+            Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
+            cal.setTime(completionDate);
+            cal.set(Calendar.HOUR_OF_DAY, 12);
+            cal.set(Calendar.MINUTE, 0);
+            cal.set(Calendar.SECOND, 0);
+            cal.set(Calendar.MILLISECOND, 0);
+            projectWork.setCurrentWorkCompletionDate(cal.getTime());
+        }
+
+        if (dates.containsKey("currentWorkStartDate")) {
+            Date startDate = dates.get("currentWorkStartDate");
+            Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
+            cal.setTime(startDate);
+            cal.set(Calendar.HOUR_OF_DAY, 12);
+            cal.set(Calendar.MINUTE, 0);
+            cal.set(Calendar.SECOND, 0);
+            cal.set(Calendar.MILLISECOND, 0);
+            projectWork.setCurrentWorkStartDate(cal.getTime());
+        }
+
+        if (dates.containsKey("currentWorkDeployDate")) {
+            Date deployDate = dates.get("currentWorkDeployDate");
+            Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
+            cal.setTime(deployDate);
+            cal.set(Calendar.HOUR_OF_DAY, 12);
+            cal.set(Calendar.MINUTE, 0);
+            cal.set(Calendar.SECOND, 0);
+            cal.set(Calendar.MILLISECOND, 0);
+            projectWork.setCurrentWorkDeployDate(cal.getTime());
+        }
+
+        return projectWorkRepository.save(projectWork);
     }
 }
