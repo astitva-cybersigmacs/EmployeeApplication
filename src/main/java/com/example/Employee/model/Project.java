@@ -27,13 +27,13 @@ public class Project {
 
     private String description;
 
-    @OneToMany(mappedBy = "project", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.ALL}, orphanRemoval = true)
+    @OneToMany(mappedBy = "project", cascade = {CascadeType.ALL}, orphanRemoval = true)
     private List<ProjectTeamMember> teamMembers;
 
-    @OneToMany(mappedBy = "project", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.ALL}, orphanRemoval = true)
+    @OneToMany(mappedBy = "project", cascade = {CascadeType.ALL}, orphanRemoval = true)
     private List<ProjectWork> projectWorks;
 
-    @OneToMany(mappedBy = "project", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.ALL}, orphanRemoval = true)
+    @OneToMany(mappedBy = "project", cascade = {CascadeType.ALL}, orphanRemoval = true)
     private List<EmployeeTask> employeeTasks;
 
     @Enumerated(EnumType.STRING)
