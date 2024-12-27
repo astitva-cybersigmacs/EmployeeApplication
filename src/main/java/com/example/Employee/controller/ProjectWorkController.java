@@ -55,7 +55,7 @@ public class ProjectWorkController {
             @RequestBody String requestBody) throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMM yyyy");
-        dateFormat.setTimeZone(TimeZone.getTimeZone("UTC")); // Set UTC timezone
+        dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
         objectMapper.setDateFormat(dateFormat);
 
         // Configure ObjectMapper to handle timezone
