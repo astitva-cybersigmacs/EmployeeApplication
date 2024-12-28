@@ -86,4 +86,45 @@ public class ProjectServiceImpl implements ProjectService {
         // Delete all related entities
         projectRepository.delete(project);
     }
+
+    @Override
+    @Transactional
+    public Project updateProject(long projectId, Project project) {
+        Project existingProject = projectRepository.findById(projectId)
+                .orElseThrow(() -> new EntityNotFoundException("Project not found with id: " + projectId));
+
+        // Update basic fields
+        existingProject.setName(project.getName());
+        existingProject.setDetails(project.getDetails());
+        existingProject.setDescription(project.getDescription());
+        existingProject.setStatus(project.getStatus());
+
+        // Update team members
+        if (project.getTeamMembers() != null) {
+            existingProject.getTeamMembers().clear();
+            project.getTeamMembers().forEach(member -> {
+                member.setProject(existingProject);
+                if (member.getUserList() != null) {
+                    member.getUserList().forEach(user -> user.setProjectTeamMember(member));
+                }
+            });
+            existingProject.getTeamMembers().addAll(project.getTeamMembers());
+        }
+
+        // Update project works
+        if (project.getProjectWorks() != null) {
+            existingProject.getProjectWorks().clear();
+            project.getProjectWorks().forEach(work -> work.setProject(existingProject));
+            existingProject.getProjectWorks().addAll(project.getProjectWorks());
+        }
+
+        // Update employee tasks
+        if (project.getEmployeeTasks() != null) {
+            existingProject.getEmployeeTasks().clear();
+            project.getEmployeeTasks().forEach(task -> task.setProject(existingProject));
+            existingProject.getEmployeeTasks().addAll(project.getEmployeeTasks());
+        }
+
+        return projectRepository.save(existingProject);
+    }
 }

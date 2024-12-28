@@ -26,7 +26,7 @@ public class ProjectTeamMember {
     @JsonIgnore
     private Project project;
 
-    @OneToMany(mappedBy = "projectTeamMember", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, orphanRemoval = true)
+    @OneToMany(mappedBy = "projectTeamMember", cascade = {CascadeType.ALL}, orphanRemoval = true)
     private List<User> userList;
 
 }

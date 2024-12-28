@@ -13,4 +13,5 @@ public interface ProjectService {
     List<Project> searchProjectsByKeyword(String keyword);
     List<Project> getAllProjectsSortedByDateDesc();
     void deleteProject(long projectId);
+    Project updateProject(long projectId, Project project);
 }
