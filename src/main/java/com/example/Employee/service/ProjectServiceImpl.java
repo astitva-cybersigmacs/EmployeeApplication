@@ -22,9 +22,19 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     @Transactional
     public Project saveProject(Project project) {
-        // Set bidirectional relationships
         if (project.getTeamMembers() != null) {
-            project.getTeamMembers().forEach(member -> member.setProject(project));
+            project.getTeamMembers().forEach(teamMember -> {
+                // Set project reference for team member
+                teamMember.setProject(project);
+
+                // Handle nested user list
+                if (teamMember.getUserList() != null) {
+                    teamMember.getUserList().forEach(user -> {
+                        // Set team member reference for each user
+                        user.setProjectTeamMember(teamMember);
+                    });
+                }
+            });
         }
 
         if (project.getProjectWorks() != null) {
@@ -34,6 +44,7 @@ public class ProjectServiceImpl implements ProjectService {
         if (project.getEmployeeTasks() != null) {
             project.getEmployeeTasks().forEach(task -> task.setProject(project));
         }
+
         return projectRepository.save(project);
     }
 
