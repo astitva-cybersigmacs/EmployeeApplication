@@ -35,9 +35,10 @@ public class EmployeeTaskServiceImpl implements EmployeeTaskService {
                 .orElseThrow(() -> new EntityNotFoundException("Project not found with id: " + projectId));
 
         // Find and validate user
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new EntityNotFoundException("User not found with id: " + userId));
-
+        User user = userRepository.findById(userId);
+        if (user == null) {
+            throw new EntityNotFoundException("User not found with id: " + userId);
+        }
         // Set the relationships
         employeeTask.setProject(project);
         employeeTask.setUser(user);
