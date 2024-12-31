@@ -16,10 +16,11 @@ public class UserController {
     private UserService userService;
 
     @PostMapping
-    public ResponseEntity<User> createUser(@RequestBody User user) {
-        User savedUser = this.userService.createUser(user);
-        return ResponseEntity.ok(savedUser);
+    public ResponseEntity<String> createUser(@RequestBody User user) {
+        this.userService.createUser(user);
+        return ResponseEntity.ok("User has been created successfully");
     }
+
     @GetMapping
     public ResponseEntity<List<User>> getAllUsers() {
         List<User> users = this.userService.getAllUsers();
