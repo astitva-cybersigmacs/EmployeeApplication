@@ -17,6 +17,7 @@ import java.util.stream.Collectors;
 public class ProjectServiceImpl implements ProjectService {
 
     private ProjectRepository projectRepository;
+    private UserRepository userRepository;
 
     @Override
     @Transactional
@@ -26,12 +27,21 @@ public class ProjectServiceImpl implements ProjectService {
                 // Set project reference for team member
                 teamMember.setProject(project);
 
-                // Handle nested user list
                 if (teamMember.getUserList() != null) {
-                    teamMember.getUserList().forEach(user -> {
-                        // Set team member reference for each user
-                        user.setProjectTeamMember(teamMember);
-                    });
+                    // Replace user data in the request with existing users from the database
+                    List<User> existingUsers = teamMember.getUserList().stream()
+                            .map(user -> {
+                                User existingUser = userRepository.findByEmail(user.getEmail());
+                                if (existingUser == null) {
+                                    throw new EntityNotFoundException("User not found with email: " + user.getEmail());
+                                }
+                                return existingUser;
+                            })
+                            .toList();
+
+                    teamMember.setUserList(existingUsers);
+
+                    existingUsers.forEach(user -> user.setProjectTeamMember(teamMember));
                 }
             });
         }
@@ -46,6 +56,7 @@ public class ProjectServiceImpl implements ProjectService {
 
         return this.projectRepository.save(project);
     }
+
 
     @Override
     public Project getProjectByName(String name) {
