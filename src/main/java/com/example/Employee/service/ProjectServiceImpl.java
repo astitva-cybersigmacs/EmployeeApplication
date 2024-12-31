@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class ProjectServiceImpl implements ProjectService {
 
-    @Autowired
+
     private ProjectRepository projectRepository;
 
     @Override
@@ -45,12 +45,12 @@ public class ProjectServiceImpl implements ProjectService {
             project.getEmployeeTasks().forEach(task -> task.setProject(project));
         }
 
-        return projectRepository.save(project);
+        return this.projectRepository.save(project);
     }
 
     @Override
     public Project getProjectByName(String name) {
-        Project project = projectRepository.findByName(name);
+        Project project = this.projectRepository.findByName(name);
         if (project == null) {
             throw new EntityNotFoundException("Project not found with name: " + name);
         }
@@ -59,7 +59,7 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public List<Project> getProjectsByStatus(ProjectStatus status) {
-        List<Project> projects = projectRepository.findByStatus(status);
+        List<Project> projects = this.projectRepository.findByStatus(status);
         if (projects.isEmpty()) {
             throw new EntityNotFoundException("No projects found with status: " + status);
         }
@@ -68,7 +68,7 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public List<Project> searchProjectsByKeyword(String keyword) {
-        List<Project> projects = projectRepository.searchByKeyword(keyword);
+        List<Project> projects = this.projectRepository.searchByKeyword(keyword);
         if (projects.isEmpty()) {
             throw new EntityNotFoundException("No projects found matching keyword: " + keyword);
         }
@@ -77,7 +77,7 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public List<Project> getAllProjectsSortedByDateDesc() {
-        List<Object[]> results = projectRepository.findAllProjectsOrderByDateDesc();
+        List<Object[]> results = this.projectRepository.findAllProjectsOrderByDateDesc();
         if (results.isEmpty()) {
             throw new EntityNotFoundException("No projects found");
         }
@@ -91,17 +91,17 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     @Transactional
     public void deleteProject(long projectId) {
-        Project project = projectRepository.findById(projectId)
+        Project project = this.projectRepository.findById(projectId)
                 .orElseThrow(() -> new EntityNotFoundException("Project not found with id: " + projectId));
 
         // Delete all related entities
-        projectRepository.delete(project);
+        this.projectRepository.delete(project);
     }
 
     @Override
     @Transactional
     public Project updateProject(long projectId, Project project) {
-        Project existingProject = projectRepository.findById(projectId)
+        Project existingProject = this.projectRepository.findById(projectId)
                 .orElseThrow(() -> new EntityNotFoundException("Project not found with id: " + projectId));
 
         // Update basic fields
@@ -136,6 +136,6 @@ public class ProjectServiceImpl implements ProjectService {
             existingProject.getEmployeeTasks().addAll(project.getEmployeeTasks());
         }
 
-        return projectRepository.save(existingProject);
+        return this.projectRepository.save(existingProject);
     }
 }

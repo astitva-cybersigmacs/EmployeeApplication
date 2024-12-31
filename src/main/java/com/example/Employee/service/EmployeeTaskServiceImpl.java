@@ -18,24 +18,24 @@ import java.util.ArrayList;
 @AllArgsConstructor
 public class EmployeeTaskServiceImpl implements EmployeeTaskService {
 
-    @Autowired
+
     private EmployeeTaskRepository employeeTaskRepository;
 
-    @Autowired
+
     private ProjectRepository projectRepository;
 
-    @Autowired
+
     private UserRepository userRepository;
 
     @Override
     @Transactional
     public EmployeeTask createEmployeeTask(long projectId, long userId, EmployeeTask employeeTask) {
         // Find and validate project
-        Project project = projectRepository.findById(projectId)
+        Project project = this.projectRepository.findById(projectId)
                 .orElseThrow(() -> new EntityNotFoundException("Project not found with id: " + projectId));
 
         // Find and validate user
-        User user = userRepository.findById(userId);
+        User user = this.userRepository.findById(userId);
         if (user == null) {
             throw new EntityNotFoundException("User not found with id: " + userId);
         }
@@ -50,6 +50,6 @@ public class EmployeeTaskServiceImpl implements EmployeeTaskService {
         project.getEmployeeTasks().add(employeeTask);
 
         // Save and return the task
-        return employeeTaskRepository.save(employeeTask);
+        return this.employeeTaskRepository.save(employeeTask);
     }
 }

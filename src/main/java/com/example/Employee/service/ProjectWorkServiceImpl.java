@@ -16,17 +16,17 @@ import java.util.*;
 @AllArgsConstructor
 public class ProjectWorkServiceImpl implements ProjectWorkService {
 
-    @Autowired
+
     private ProjectWorkRepository projectWorkRepository;
 
-    @Autowired
+
     private ProjectRepository projectRepository;
 
 
     @Override
     @Transactional
     public ProjectWork saveProjectWork(long projectId, ProjectWork projectWork) {
-        Project project = projectRepository.findById(projectId)
+        Project project = this.projectRepository.findById(projectId)
                 .orElseThrow(() -> new EntityNotFoundException("Project not found with id: " + projectId));
 
         projectWork.setProject(project);
@@ -37,16 +37,16 @@ public class ProjectWorkServiceImpl implements ProjectWorkService {
 
         project.getProjectWorks().add(projectWork);
 
-        return projectWorkRepository.save(projectWork);
+        return this.projectWorkRepository.save(projectWork);
     }
 
     @Override
     @Transactional
     public void deleteProjectWork(long projectId, long workId) {
-        Project project = projectRepository.findById(projectId)
+        Project project = this.projectRepository.findById(projectId)
                 .orElseThrow(() -> new EntityNotFoundException("Project not found with id: " + projectId));
 
-        ProjectWork projectWork = projectWorkRepository.findById(workId)
+        ProjectWork projectWork = this.projectWorkRepository.findById(workId)
                 .orElseThrow(() -> new EntityNotFoundException("Project work not found with id: " + workId));
 
         // Verify that the project work belongs to the specified project
@@ -58,12 +58,12 @@ public class ProjectWorkServiceImpl implements ProjectWorkService {
         project.getProjectWorks().remove(projectWork);
 
         // Delete the project work
-        projectWorkRepository.delete(projectWork);
+        this.projectWorkRepository.delete(projectWork);
     }
 
     @Override
     public List<ProjectWork> getProjectWorksByProjectId(long projectId) {
-        Project project = projectRepository.findById(projectId)
+        Project project = this.projectRepository.findById(projectId)
                 .orElseThrow(() -> new EntityNotFoundException("Project not found with id: " + projectId));
 
         return project.getProjectWorks();
@@ -72,10 +72,10 @@ public class ProjectWorkServiceImpl implements ProjectWorkService {
     @Override
     @Transactional
     public ProjectWork updateProjectWorkDates(long projectId, long workId, Map<String, Date> dates) {
-        Project project = projectRepository.findById(projectId)
+        Project project = this.projectRepository.findById(projectId)
                 .orElseThrow(() -> new EntityNotFoundException("Project not found with id: " + projectId));
 
-        ProjectWork projectWork = projectWorkRepository.findById(workId)
+        ProjectWork projectWork = this.projectWorkRepository.findById(workId)
                 .orElseThrow(() -> new EntityNotFoundException("Project work not found with id: " + workId));
 
         if (projectWork.getProject().getProjectId() != projectId) {
@@ -116,6 +116,6 @@ public class ProjectWorkServiceImpl implements ProjectWorkService {
             projectWork.setCurrentWorkDeployDate(cal.getTime());
         }
 
-        return projectWorkRepository.save(projectWork);
+        return this.projectWorkRepository.save(projectWork);
     }
 }

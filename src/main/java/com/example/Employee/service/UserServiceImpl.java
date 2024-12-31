@@ -13,13 +13,13 @@ import java.util.List;
 @AllArgsConstructor
 public class UserServiceImpl implements UserService {
 
-    @Autowired
+
     private UserRepository userRepository;
 
     @Override
     public User createUser(User user) {
         // Check if email already exists
-        User existingUser = userRepository.findByEmail(user.getEmail());
+        User existingUser = this.userRepository.findByEmail(user.getEmail());
         if (existingUser != null) {
             throw new RuntimeException("Email already exists: " + user.getEmail());
         }
@@ -32,17 +32,17 @@ public class UserServiceImpl implements UserService {
             throw new RuntimeException("Email is required");
         }
 
-        return userRepository.save(user);
+        return this.userRepository.save(user);
     }
 
     @Override
     public List<User> getAllUsers() {
-        return userRepository.findAll();
+        return this.userRepository.findAll();
     }
 
     @Override
     public User getUserById(long userId) {
-        User user = userRepository.findById(userId);
+        User user = this.userRepository.findById(userId);
         if (user == null) {
             throw new EntityNotFoundException("User not found with id: " + userId);
         }
@@ -51,7 +51,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getUserByEmail(String email) {
-        User user = userRepository.findByEmail(email);
+        User user = this.userRepository.findByEmail(email);
         if (user == null) {
             throw new EntityNotFoundException("User not found with email: " + email);
         }
