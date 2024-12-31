@@ -3,7 +3,6 @@ package com.example.Employee.controller;
 import com.example.Employee.model.EmployeeTask;
 import com.example.Employee.service.EmployeeTaskService;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
