@@ -41,7 +41,6 @@ public class ProjectWorkController {
         // Prepare the response with success message and saved project work
         Map<String, Object> response = new HashMap<>();
         response.put("message", "Project Work created successfully");
-        response.put("projectWork", savedWork);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
