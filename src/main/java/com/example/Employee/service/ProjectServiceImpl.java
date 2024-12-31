@@ -16,7 +16,6 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class ProjectServiceImpl implements ProjectService {
 
-
     private ProjectRepository projectRepository;
 
     @Override

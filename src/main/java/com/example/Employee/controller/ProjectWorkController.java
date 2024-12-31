@@ -21,7 +21,7 @@ import java.util.Map;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("/projectWork")
+@RequestMapping("projectWork")
 public class ProjectWorkController {
 
 

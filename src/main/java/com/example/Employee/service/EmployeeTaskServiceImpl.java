@@ -9,7 +9,6 @@ import com.example.Employee.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -21,9 +20,7 @@ public class EmployeeTaskServiceImpl implements EmployeeTaskService {
 
     private EmployeeTaskRepository employeeTaskRepository;
 
-
     private ProjectRepository projectRepository;
-
 
     private UserRepository userRepository;
 

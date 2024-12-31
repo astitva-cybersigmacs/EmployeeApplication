@@ -16,7 +16,7 @@ import java.util.Map;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("/api/projects")
+@RequestMapping("projects")
 public class ProjectController {
 
     private ProjectRepository projectRepository;
