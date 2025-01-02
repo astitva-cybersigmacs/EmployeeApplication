@@ -7,7 +7,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @AllArgsConstructor
@@ -44,10 +46,12 @@ public class EmployeeTaskController {
     }
 
     @PutMapping("/{taskId}")
-    public ResponseEntity<EmployeeTask> updateEmployeeTask(
+    public ResponseEntity<Map<String, String>> updateEmployeeTask(
             @PathVariable long taskId,
             @RequestBody EmployeeTask employeeTask) {
-        EmployeeTask updatedTask = this.employeeTaskService.updateEmployeeTask(taskId, employeeTask);
-        return new ResponseEntity<>(updatedTask, HttpStatus.OK);
+        this.employeeTaskService.updateEmployeeTask(taskId, employeeTask);
+        Map<String, String> response = new HashMap<>();
+        response.put("message", "Employee task has been updated successfully");
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }
