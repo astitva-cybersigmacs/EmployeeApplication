@@ -23,7 +23,7 @@ public class EmployeeTaskController {
             @PathVariable long projectId,
             @PathVariable long userId,
             @RequestBody EmployeeTask employeeTask) {
-        EmployeeTask savedTask = this.employeeTaskService.createEmployeeTask(projectId, userId, employeeTask);
+        this.employeeTaskService.createEmployeeTask(projectId, userId, employeeTask);
         return new ResponseEntity<>("Task created successfully", HttpStatus.CREATED);
     }
 
