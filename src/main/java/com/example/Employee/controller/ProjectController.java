@@ -39,14 +39,14 @@ public class ProjectController {
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
-    @GetMapping("/name/{name}")
+    @GetMapping("/name")
     @SneakyThrows
-    public ResponseEntity<?> getProjectByName(@PathVariable String name) {
+    public ResponseEntity<?> getProjectByName(@RequestParam String name) {
         Project project = this.projectService.getProjectByName(name);
 
         if (project == null) {
             Map<String, String> errorResponse = new HashMap<>();
-            errorResponse.put("error", "Project with name '" + name + "' not found");
+            errorResponse.put("message", "The project with name '" + name + "' is not present");
             return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
         }
 
