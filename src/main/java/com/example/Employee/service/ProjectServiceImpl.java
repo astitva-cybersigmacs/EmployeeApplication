@@ -60,11 +60,7 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public Project getProjectByName(String name) {
-        Project project = this.projectRepository.findByName(name);
-        if (project == null) {
-            throw new EntityNotFoundException("Project not found with name: " + name);
-        }
-        return project;
+        return this.projectRepository.findByName(name);
     }
 
     @Override
