@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -56,15 +57,15 @@ public class ProjectController {
     @GetMapping("/status/{status}")
     @SneakyThrows
     public ResponseEntity<?> getProjectsByStatus(@PathVariable ProjectStatus status) {
-        List<Project> projects = this.projectService.getProjectsByStatus(status);
-
-        if (projects.isEmpty()) {
+        try {
+            List<Project> projects = this.projectService.getProjectsByStatus(status);
+            return ResponseEntity.ok(projects);
+        } catch (IllegalArgumentException e) {
             Map<String, String> errorResponse = new HashMap<>();
-            errorResponse.put("error", "No projects found with status '" + status + "'");
-            return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
+            errorResponse.put("error", "Invalid project status: '" + status + "'. Valid values are: "
+                    + Arrays.toString(ProjectStatus.values()));
+            return ResponseEntity.badRequest().body(errorResponse);
         }
-
-        return ResponseEntity.ok(projects);
     }
 
     @GetMapping("/search")

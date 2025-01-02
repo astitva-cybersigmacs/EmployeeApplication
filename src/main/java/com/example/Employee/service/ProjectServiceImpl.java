@@ -8,7 +8,10 @@ import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 
@@ -67,7 +70,9 @@ public class ProjectServiceImpl implements ProjectService {
     public List<Project> getProjectsByStatus(ProjectStatus status) {
         List<Project> projects = this.projectRepository.findByStatus(status);
         if (projects.isEmpty()) {
-            throw new EntityNotFoundException("No projects found with status: " + status);
+            Map<String, String> errorResponse = new HashMap<>();
+            errorResponse.put("error", "No projects found with status: " + status);
+            throw new IllegalArgumentException("No projects found with status: " + status);
         }
         return projects;
     }
