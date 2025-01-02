@@ -42,4 +42,12 @@ public class EmployeeTaskController {
         List<EmployeeTask> tasks = this.employeeTaskService.getEmployeeTasksByProjectId(projectId);
         return new ResponseEntity<>(tasks, HttpStatus.OK);
     }
+
+    @PutMapping("/{taskId}")
+    public ResponseEntity<EmployeeTask> updateEmployeeTask(
+            @PathVariable long taskId,
+            @RequestBody EmployeeTask employeeTask) {
+        EmployeeTask updatedTask = this.employeeTaskService.updateEmployeeTask(taskId, employeeTask);
+        return new ResponseEntity<>(updatedTask, HttpStatus.OK);
+    }
 }

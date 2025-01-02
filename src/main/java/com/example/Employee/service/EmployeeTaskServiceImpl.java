@@ -69,4 +69,24 @@ public class EmployeeTaskServiceImpl implements EmployeeTaskService {
         return project.getEmployeeTasks();
     }
 
+    @Override
+    @Transactional
+    public EmployeeTask updateEmployeeTask(long employeeTaskId, EmployeeTask employeeTask) {
+        // Find the existing task
+        EmployeeTask existingTask = this.employeeTaskRepository.findById(employeeTaskId)
+                .orElseThrow(() -> new EntityNotFoundException("Employee Task not found with id: " + employeeTaskId));
+
+        // Update the fields
+        existingTask.setCurrentTask(employeeTask.getCurrentTask());
+        existingTask.setPendingTask(employeeTask.getPendingTask());
+        existingTask.setTodoTask(employeeTask.getTodoTask());
+        existingTask.setCurrentTaskCompletionDate(employeeTask.getCurrentTaskCompletionDate());
+        existingTask.setPendingTaskCompletionDate(employeeTask.getPendingTaskCompletionDate());
+        existingTask.setReasonForPendingTask(employeeTask.getReasonForPendingTask());
+        existingTask.setMerged(employeeTask.isMerged());
+
+        // Save and return the updated task
+        return this.employeeTaskRepository.save(existingTask);
+    }
+
 }

@@ -10,4 +10,5 @@ public interface EmployeeTaskService {
     List<EmployeeTask> getAllEmployeeTasks();
     EmployeeTask getEmployeeTaskById(long employeeTaskId);
     List<EmployeeTask> getEmployeeTasksByProjectId(long projectId);
+    EmployeeTask updateEmployeeTask(long employeeTaskId, EmployeeTask employeeTask);
 }
