@@ -7,6 +7,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @AllArgsConstructor
 @RequestMapping("employeeTask")
@@ -23,4 +25,21 @@ public class EmployeeTaskController {
         return new ResponseEntity<>("Task created successfully", HttpStatus.CREATED);
     }
 
+    @GetMapping
+    public ResponseEntity<List<EmployeeTask>> getAllEmployeeTasks() {
+        List<EmployeeTask> tasks = this.employeeTaskService.getAllEmployeeTasks();
+        return new ResponseEntity<>(tasks, HttpStatus.OK);
+    }
+
+    @GetMapping("/{taskId}")
+    public ResponseEntity<EmployeeTask> getEmployeeTaskById(@PathVariable long taskId) {
+        EmployeeTask task = this.employeeTaskService.getEmployeeTaskById(taskId);
+        return new ResponseEntity<>(task, HttpStatus.OK);
+    }
+
+    @GetMapping("/project/{projectId}")
+    public ResponseEntity<List<EmployeeTask>> getEmployeeTasksByProjectId(@PathVariable long projectId) {
+        List<EmployeeTask> tasks = this.employeeTaskService.getEmployeeTasksByProjectId(projectId);
+        return new ResponseEntity<>(tasks, HttpStatus.OK);
+    }
 }

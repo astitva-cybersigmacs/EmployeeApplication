@@ -12,6 +12,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @AllArgsConstructor
@@ -49,4 +50,23 @@ public class EmployeeTaskServiceImpl implements EmployeeTaskService {
         // Save and return the task
         return this.employeeTaskRepository.save(employeeTask);
     }
+
+    @Override
+    public List<EmployeeTask> getAllEmployeeTasks() {
+        return this.employeeTaskRepository.findAll();
+    }
+
+    @Override
+    public EmployeeTask getEmployeeTaskById(long employeeTaskId) {
+        return this.employeeTaskRepository.findById(employeeTaskId)
+                .orElseThrow(() -> new EntityNotFoundException("Employee Task not found with id: " + employeeTaskId));
+    }
+
+    @Override
+    public List<EmployeeTask> getEmployeeTasksByProjectId(long projectId) {
+        Project project = this.projectRepository.findById(projectId)
+                .orElseThrow(() -> new EntityNotFoundException("Project not found with id: " + projectId));
+        return project.getEmployeeTasks();
+    }
+
 }
